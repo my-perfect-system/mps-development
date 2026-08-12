@@ -1,10 +1,7 @@
 ---
-- name: "DEV_DOTNET_MAIN - Resolve users"
-  ansible.builtin.include_tasks: resolve.yml
-
 - name: "DEV_DOTNET_MAIN - Install .NET SDK per user"
   ansible.builtin.include_tasks: install.yml
-  loop: "{{ dotnet_users_present }}"
+  loop: "{{ identity_users_resolved }}"
   loop_control:
     label: "{{ item.name }}"
   vars:

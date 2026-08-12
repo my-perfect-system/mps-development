@@ -1,7 +1,5 @@
 ---
 
-users_catalog: {}  # noqa var-naming[no-role-prefix]
-users_list: []  # noqa var-naming[no-role-prefix]
 dotnet_installer_url: "https://dot.net/v1/dotnet-install.sh"
 dotnet_installer_path: /tmp/dotnet-install.sh
 dotnet_install_args: "--version latest"

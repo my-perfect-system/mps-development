@@ -1,6 +1,4 @@
 ---
 
-users_catalog: {}  # noqa var-naming[no-role-prefix]
-users_list: []  # noqa var-naming[no-role-prefix]
 latex_packages:
   - texlive-full

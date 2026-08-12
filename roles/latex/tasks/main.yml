@@ -1,11 +1,11 @@
 ---
-- name: "DEV_LATEX_MAIN - Resolve users"
-  ansible.builtin.include_tasks: resolve.yml
-
 - name: "DEV_LATEX_MAIN - Install LaTeX per user"
   ansible.builtin.include_tasks: install.yml
-  loop: "{{ latex_users_present }}"
+  loop: "{{ identity_users_resolved }}"
   loop_control:
     label: "{{ item.name }}"
+  when:
+    - entity.user_roles.development_latex | default(false)
+    - entity.state == 'present'
   vars:
     user: "{{ item }}"

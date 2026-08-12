@@ -1,7 +1,5 @@
 ---
 
-users_catalog: {}  # noqa var-naming[no-role-prefix]
-users_list: []  # noqa var-naming[no-role-prefix]
 lmstudio_cli_installer_url: "https://lmstudio.ai/install.sh"
 lmstudio_appimage_version: "0.4.12-1"
 lmstudio_appimage_url: "https://installers.lmstudio.ai/linux/x64/{{ lmstudio_appimage_version }}/LM-Studio-{{ lmstudio_appimage_version }}-x64.AppImage"
