@@ -15,13 +15,13 @@ See [`galaxy.yml`](galaxy.yml) for the canonical values.
 
 | Role | Purpose |
 |---|---|
-| `mps.development.opencode` | opencode CLI + dotfile sync (`files/`-based). |
-| `mps.development.java` | Java packages (`texlive-full`-style single apt install). |
-| `mps.development.dotnet` | Microsoft `.NET` installer per user. |
-| `mps.development.espidf` | Multi-version esp-idf clone + install + per-version activator scripts. |
-| `mps.development.latex` | texlive-full install. |
-| `mps.development.lmstudio` | LM Studio CLI + appimage + .desktop entry. |
-| `mps.development.unity` | Unity apt repo + signing key + UnityHub packages + conditional VS Code deb. |
+| [`mps.development.opencode`](roles/opencode/README.md) | opencode CLI + dotfile sync (`files/`-based). |
+| [`mps.development.java`](roles/java/README.md) | Java packages (`texlive-full`-style single apt install). |
+| [`mps.development.dotnet`](roles/dotnet/README.md) | Microsoft `.NET` installer per user. |
+| [`mps.development.espidf`](roles/espidf/README.md) | Multi-version esp-idf clone + install + per-version activator scripts. |
+| [`mps.development.latex`](roles/latex/README.md) | texlive-full install. |
+| [`mps.development.lmstudio`](roles/lmstudio/README.md) | LM Studio CLI + appimage + .desktop entry. |
+| [`mps.development.unity`](roles/unity/README.md) | Unity apt repo + signing key + UnityHub packages + conditional VS Code deb. |
 
 ## Installation
 
