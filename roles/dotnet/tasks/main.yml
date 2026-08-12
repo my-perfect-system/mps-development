@@ -1,10 +1,32 @@
 ---
 - name: Install dotnet per user
-  ansible.builtin.include_tasks: install.yml
-  loop: "{{ identity_users_resolved }}"
-  loop_control:
-    label: "{{ item.name }}"
   vars:
     user: "{{ item }}"
-  when:
-    - user != {}
+  block:
+    - name: Download dotnet install script
+      ansible.builtin.get_url:
+        url: "{{ dotnet_installer_url }}"
+        dest: "{{ dotnet_installer_path }}"
+        mode: "0755"
+
+    - name: Run dotnet installer as user
+      ansible.builtin.command:
+        cmd: sudo -u {{ user.name }} "{{ dotnet_installer_path }}" {{ dotnet_install_args }}
+        changed_when: true
+
+    - name: Ensure per-user .dotnet directory exists
+      ansible.builtin.file:
+        path: "{{ user.home }}/.dotnet"
+        state: directory
+        owner: "{{ user.name }}"
+        group: "{{ user.group | default(user.name) }}"
+        mode: "0700"
+        recurse: true
+
+    - name: Remove dotnet installer
+      ansible.builtin.file:
+        path: "{{ dotnet_installer_path }}"
+        state: absent
+  loop: "{{ identity_users_resolved | mps_filter_users('development_dotnet') }}"
+  loop_control:
+    label: "{{ item.name }}"

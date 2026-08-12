@@ -1,7 +1,0 @@
----
-- name: Install latex packages
-  ansible.builtin.package:
-    name: "{{ latex_packages }}"
-    state: present
-    update_cache: true
-  become: true

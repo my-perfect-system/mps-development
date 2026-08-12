@@ -1,11 +1,14 @@
 ---
 - name: Install java packages per user
-  ansible.builtin.include_tasks: install.yml
-  loop: "{{ identity_users_resolved }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when:
-    - entity.user_roles.development_java | default(false)
-    - entity.state == 'present'
   vars:
     user: "{{ item }}"
+  block:
+    - name: Install java packages
+      ansible.builtin.package:
+        name: "{{ java_packages }}"
+        state: present
+        update_cache: true
+      become: true
+  loop: "{{ identity_users_resolved | mps_filter_users('development_java') }}"
+  loop_control:
+    label: "{{ item.name }}"

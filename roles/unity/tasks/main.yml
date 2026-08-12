@@ -1,11 +1,64 @@
 ---
 - name: Install unity per user
-  ansible.builtin.include_tasks: install.yml
-  loop: "{{ identity_users_resolved }}"
-  loop_control:
-    label: "{{ item.name }}"
-  when:
-    - entity.user_roles.development_unity | default(false)
-    - entity.state == 'present'
   vars:
     user: "{{ item }}"
+  block:
+    - name: Ensure /usr/share/keyrings exists
+      ansible.builtin.file:
+        path: /usr/share/keyrings
+        state: directory
+        mode: "0755"
+      become: true
+
+    - name: Download unity signing key
+      ansible.builtin.get_url:
+        url: "{{ unity_key_url }}"
+        dest: /tmp/unity-key.pub
+        mode: "0644"
+      become: true
+
+    - name: Dearmor unity signing key into keyring
+      ansible.builtin.command: gpg --dearmor --yes -o {{ unity_key_path }} /tmp/unity-key.pub
+      args:
+        creates: "{{ unity_key_path }}"
+      become: true
+
+    - name: Remove temporary unity key file
+      ansible.builtin.file:
+        path: /tmp/unity-key.pub
+        state: absent
+      become: true
+
+    - name: Configure unity apt repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by={{ unity_key_path }}] {{ unity_repo_url }} {{ unity_repo_components | join(' ') }}"
+        filename: unityhub
+        state: "{{ unity_repo_state }}"
+        update_cache: true
+      become: true
+
+    - name: Install unity packages
+      ansible.builtin.package:
+        name: "{{ unity_packages }}"
+        state: present
+        update_cache: true
+      become: true
+
+    - name: Check whether VS Code is installed
+      ansible.builtin.command: dpkg -s code
+      register: vscode_installed
+      failed_when: false
+      changed_when: false
+      check_mode: false
+
+    - name: Install VS Code deb if missing
+      ansible.builtin.package:
+        deb: "{{ unity_vscode_deb_url }}"
+        state: present
+      become: true
+      when:
+        - unity_enable_vscode | bool
+        - vscode_installed.rc != 0
+  loop: "{{ identity_users_resolved | mps_filter_users('development_unity') }}"
+  loop_control:
+    label: "{{ item.name }}"

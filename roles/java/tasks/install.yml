@@ -1,7 +1,0 @@
----
-- name: Install java packages
-  ansible.builtin.package:
-    name: "{{ java_packages }}"
-    state: present
-    update_cache: true
-  become: true

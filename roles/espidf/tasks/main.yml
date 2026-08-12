@@ -1,10 +1,109 @@
 ---
-- name: Install esp-idf per user
-  ansible.builtin.include_tasks: install.yml
-  loop: "{{ identity_users_resolved }}"
-  loop_control:
-    label: "{{ item.name }}"
+- name: Install esp-idf apt dependencies per user
   vars:
     user: "{{ item }}"
-  when:
-    - user != {}
+  block:
+    - name: Install esp-idf apt dependencies
+      ansible.builtin.package:
+        name: "{{ espidf_apt_packages }}"
+        state: present
+        update_cache: true
+      become: true
+  loop: "{{ identity_users_resolved | mps_filter_users('development_espidf') }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Ensure esp-idf user directories exist
+  vars:
+    user: "{{ item }}"
+  block:
+    - name: Ensure esp-idf user directories exist
+      ansible.builtin.file:
+        path: "{{ path }}"
+        state: directory
+        owner: "{{ user.name }}"
+        group: "{{ user.group | default(user.name) }}"
+        mode: "0700"
+      loop:
+        - "{{ user.home }}/{{ espidf_src_base }}"
+        - "{{ user.home }}/{{ espidf_tools_base }}"
+        - "{{ user.home }}/{{ espidf_local_bin }}"
+      loop_control:
+        loop_var: path
+  loop: "{{ identity_users_resolved | mps_filter_users('development_espidf') }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Clone and install esp-idf per version
+  vars:
+    user: "{{ item }}"
+  block:
+    - name: Clone and install esp-idf per version
+      ansible.builtin.shell:
+        cmd: |
+          set -e
+
+          VERSION="{{ espidf_version }}"
+
+          SRC="{{ user.home }}/{{ espidf_src_base }}/esp-idf-$VERSION"
+          TOOLS="{{ user.home }}/{{ espidf_tools_base }}/esp-idf-$VERSION"
+
+          export IDF_PATH="$SRC"
+          export IDF_TOOLS_PATH="$TOOLS"
+
+          if [ ! -d "$SRC/.git" ]; then
+            git clone -j8 -b $VERSION --recursive https://github.com/espressif/esp-idf.git "$SRC"
+          fi
+
+          cd "$SRC"
+          ./install.sh
+          . export.sh
+
+          touch "$TOOLS/.installed"
+        executable: /bin/bash
+        creates: "{{ user.home }}/{{ espidf_tools_base }}/esp-idf-{{ espidf_version }}/.installed"
+        changed_when: true
+      loop: "{{ espidf_versions }}"
+      loop_control:
+        loop_var: espidf_version
+  loop: "{{ identity_users_resolved | mps_filter_users('development_espidf') }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Ensure per-user esp directory exists with correct ownership
+  vars:
+    user: "{{ item }}"
+  block:
+    - name: Ensure per-user esp directory exists with correct ownership
+      ansible.builtin.file:
+        path: "{{ user.home }}/esp"
+        state: directory
+        owner: "{{ user.name }}"
+        group: "{{ user.group | default(user.name) }}"
+        mode: "0700"
+        recurse: true
+  loop: "{{ identity_users_resolved | mps_filter_users('development_espidf') }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Deploy per-version esp-idf activator scripts
+  vars:
+    user: "{{ item }}"
+  block:
+    - name: Deploy per-version esp-idf activator scripts
+      ansible.builtin.copy:
+        dest: "{{ user.home }}/.local/bin/activate-espidf-{{ espidf_version }}.bash"
+        owner: "{{ user.name }}"
+        group: "{{ user.group | default(user.name) }}"
+        mode: "0700"
+        content: |
+          #!/bin/bash
+          export IDF_PATH="{{ user.home }}/{{ espidf_src_base }}/esp-idf-{{ espidf_version }}"
+          export IDF_TOOLS_PATH="{{ user.home }}/{{ espidf_tools_base }}/esp-idf-{{ espidf_version }}"
+          source "$IDF_PATH/export.sh"
+      loop: "{{ espidf_versions }}"
+      loop_control:
+        loop_var: espidf_version
+  loop: "{{ identity_users_resolved | mps_filter_users('development_espidf') }}"
+  loop_control:
+    label: "{{ item.name }}"
