@@ -1,4 +1,3 @@
----
 argument_specs:
   main:
     short_description: Install texlive-full for Debian 13 (trixie)
@@ -7,15 +6,5 @@ argument_specs:
         type: list
         required: false
         default:
-          - texlive-full
+        - texlive-full
         description: Apt packages required for the LaTeX toolchain
-      users_catalog:
-        type: dict
-        required: false
-        default: {}
-        description: Identity catalog keyed by unique id — see mps.users.users docs
-      users_list:
-        type: list
-        required: false
-        default: []
-        description: List of dicts with 'name' (catalog key) and optional 'state'

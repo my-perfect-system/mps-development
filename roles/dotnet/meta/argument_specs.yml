@@ -1,4 +1,3 @@
----
 argument_specs:
   main:
     short_description: Install .NET SDK via the official dotnet-install.sh script
@@ -6,7 +5,7 @@ argument_specs:
       dotnet_installer_url:
         type: str
         required: false
-        default: "https://dot.net/v1/dotnet-install.sh"
+        default: https://dot.net/v1/dotnet-install.sh
         description: URL of the official dotnet-install.sh script
       dotnet_installer_path:
         type: str
@@ -16,15 +15,5 @@ argument_specs:
       dotnet_install_args:
         type: str
         required: false
-        default: "--version latest"
+        default: --version latest
         description: Arguments passed to the dotnet-install.sh script
-      users_catalog:
-        type: dict
-        required: false
-        default: {}
-        description: Identity catalog keyed by unique id — see mps.users.users docs
-      users_list:
-        type: list
-        required: false
-        default: []
-        description: List of dicts with 'name' (catalog key) and optional 'state'
