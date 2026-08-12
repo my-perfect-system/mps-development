@@ -1,10 +1,10 @@
 ---
-namespace: mps
+namespace: odem
 collection: development
 role: unity
 ---
 
-# `mps.development.unity`
+# `odem.development.unity`
 
 Install Unity Hub + VSCode for Debian 13 (trixie)
 
@@ -23,14 +23,14 @@ Install Unity Hub + VSCode for Debian 13 (trixie)
 
 ## Dependencies
 
-- `mps.base.identity`
+- `odem.base.identity`
 
 ## Example usage
 
 ```yaml
 - hosts: all
   roles:
-    - mps.development.unity
+    - odem.development.unity
 ```
 
 ## Role metadata

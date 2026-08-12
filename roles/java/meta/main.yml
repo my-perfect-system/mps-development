@@ -16,6 +16,6 @@ galaxy_info:
     - dev
     - java
     - jdk
-    - mps-development
+    - odem-development
 dependencies:
-  - role: mps.base.identity
+  - role: odem.base.identity

@@ -17,6 +17,6 @@ galaxy_info:
     - latex
     - texlive
     - typesetting
-    - mps-development
+    - odem-development
 dependencies:
-  - role: mps.base.identity
+  - role: odem.base.identity

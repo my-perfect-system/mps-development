@@ -1,5 +1,5 @@
 ---
-name: mps-todo
+name: odem-todo
 description: "Use when creating todos through mandatory user questioning: context search vs brainstorm → technical details → verification phase confirmation. Trigger: 'mps todo workflow', 'user-driven todo creation', or 'todos with subtask precision'."
 ---
 

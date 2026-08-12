@@ -1,10 +1,10 @@
 ---
-namespace: mps
+namespace: odem
 collection: development
 role: java
 ---
 
-# `mps.development.java`
+# `odem.development.java`
 
 Install default JDK and JRE for Debian 13 (trixie)
 
@@ -16,14 +16,14 @@ Install default JDK and JRE for Debian 13 (trixie)
 
 ## Dependencies
 
-- `mps.base.identity`
+- `odem.base.identity`
 
 ## Example usage
 
 ```yaml
 - hosts: all
   roles:
-    - mps.development.java
+    - odem.development.java
 ```
 
 ## Role metadata

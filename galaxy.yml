@@ -1,5 +1,5 @@
 ---
-namespace: mps
+namespace: odem
 name: development
 version: 0.3.1
 readme: README.md
@@ -19,11 +19,11 @@ tags:
   - lmstudio
   - opencode
   - unity
-  - mps
-repository: https://github.com/my-perfect-system/mps-development
-documentation: https://github.com/my-perfect-system/mps-development
-homepage: https://github.com/my-perfect-system/mps-development
-issues: https://github.com/my-perfect-system/mps-development/issues
+  - odem
+repository: https://github.com/my-perfect-system/odem-development
+documentation: https://github.com/my-perfect-system/odem-development
+homepage: https://github.com/my-perfect-system/odem-development
+issues: https://github.com/my-perfect-system/odem-development/issues
 build_ignore:
   .ansible-lint
   .yamllint
@@ -33,5 +33,5 @@ build_ignore:
   - "*.tar.gz"
   - .ansible
 dependencies:
-  mps.base: ">=0.1.0"
+  odem.base: ">=0.1.0"
   ansible.posix: ">=1.0.0"

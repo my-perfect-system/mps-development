@@ -1,10 +1,10 @@
 ---
-namespace: mps
+namespace: odem
 collection: development
 role: espidf
 ---
 
-# `mps.development.espidf`
+# `odem.development.espidf`
 
 Install Espressif IoT Development Framework (multi-version, per-user)
 
@@ -20,14 +20,14 @@ Install Espressif IoT Development Framework (multi-version, per-user)
 
 ## Dependencies
 
-- `mps.base.identity`
+- `odem.base.identity`
 
 ## Example usage
 
 ```yaml
 - hosts: all
   roles:
-    - mps.development.espidf
+    - odem.development.espidf
 ```
 
 ## Role metadata

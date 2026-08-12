@@ -1,13 +1,13 @@
-# `mps.development` Ansible Collection
+# `odem.development` Ansible Collection
 
 Per-user development tooling — SDKs, CLIs, IDEs.
 
 ## Galaxy metadata
 
-- **namespace**: `mps`
+- **namespace**: `odem`
 - **name**: `development`
 - **version**: `0.3.1`
-- **dependencies**: `mps.base`, `ansible.posix`
+- **dependencies**: `odem.base`, `ansible.posix`
 
 See [`galaxy.yml`](galaxy.yml) for the canonical values.
 
@@ -15,18 +15,18 @@ See [`galaxy.yml`](galaxy.yml) for the canonical values.
 
 | Role | Purpose |
 |---|---|
-| [`mps.development.opencode`](roles/opencode/README.md) | opencode CLI + dotfile sync (`files/`-based). |
-| [`mps.development.java`](roles/java/README.md) | Java packages (`texlive-full`-style single apt install). |
-| [`mps.development.dotnet`](roles/dotnet/README.md) | Microsoft `.NET` installer per user. |
-| [`mps.development.espidf`](roles/espidf/README.md) | Multi-version esp-idf clone + install + per-version activator scripts. |
-| [`mps.development.latex`](roles/latex/README.md) | texlive-full install. |
-| [`mps.development.lmstudio`](roles/lmstudio/README.md) | LM Studio CLI + appimage + .desktop entry. |
-| [`mps.development.unity`](roles/unity/README.md) | Unity apt repo + signing key + UnityHub packages + conditional VS Code deb. |
+| [`odem.development.opencode`](roles/opencode/README.md) | opencode CLI + dotfile sync (`files/`-based). |
+| [`odem.development.java`](roles/java/README.md) | Java packages (`texlive-full`-style single apt install). |
+| [`odem.development.dotnet`](roles/dotnet/README.md) | Microsoft `.NET` installer per user. |
+| [`odem.development.espidf`](roles/espidf/README.md) | Multi-version esp-idf clone + install + per-version activator scripts. |
+| [`odem.development.latex`](roles/latex/README.md) | texlive-full install. |
+| [`odem.development.lmstudio`](roles/lmstudio/README.md) | LM Studio CLI + appimage + .desktop entry. |
+| [`odem.development.unity`](roles/unity/README.md) | Unity apt repo + signing key + UnityHub packages + conditional VS Code deb. |
 
 ## Installation
 
 ```bash
-ansible-galaxy collection install mps.development
+ansible-galaxy collection install odem.development
 ```
 
 ## Usage
@@ -42,10 +42,10 @@ ansible-galaxy collection install mps.development
           development_java: true
           development_dotnet: true
   roles:
-    - mps.base.identity
-    - mps.development.opencode
-    - mps.development.java
-    - mps.development.dotnet
+    - odem.base.identity
+    - odem.development.opencode
+    - odem.development.java
+    - odem.development.dotnet
 ```
 
 ## Documentation

@@ -1,10 +1,10 @@
 ---
-namespace: mps
+namespace: odem
 collection: development
 role: dotnet
 ---
 
-# `mps.development.dotnet`
+# `odem.development.dotnet`
 
 Install .NET SDK via the official dotnet-install.sh script
 
@@ -18,14 +18,14 @@ Install .NET SDK via the official dotnet-install.sh script
 
 ## Dependencies
 
-- `mps.base.identity`
+- `odem.base.identity`
 
 ## Example usage
 
 ```yaml
 - hosts: all
   roles:
-    - mps.development.dotnet
+    - odem.development.dotnet
 ```
 
 ## Role metadata

@@ -1,10 +1,10 @@
 ---
-namespace: mps
+namespace: odem
 collection: development
 role: opencode
 ---
 
-# `mps.development.opencode`
+# `odem.development.opencode`
 
 Install OpenCode CLI + per-user dotfiles (~/.config/opencode, ~/.claude)
 
@@ -23,14 +23,14 @@ Install OpenCode CLI + per-user dotfiles (~/.config/opencode, ~/.claude)
 
 ## Dependencies
 
-- `mps.base.identity`
+- `odem.base.identity`
 
 ## Example usage
 
 ```yaml
 - hosts: all
   roles:
-    - mps.development.opencode
+    - odem.development.opencode
 ```
 
 ## Role metadata

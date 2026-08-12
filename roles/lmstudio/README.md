@@ -1,10 +1,10 @@
 ---
-namespace: mps
+namespace: odem
 collection: development
 role: lmstudio
 ---
 
-# `mps.development.lmstudio`
+# `odem.development.lmstudio`
 
 Install LM Studio (CLI + AppImage) per user for Debian 13 (trixie)
 
@@ -22,14 +22,14 @@ Install LM Studio (CLI + AppImage) per user for Debian 13 (trixie)
 
 ## Dependencies
 
-- `mps.base.identity`
+- `odem.base.identity`
 
 ## Example usage
 
 ```yaml
 - hosts: all
   roles:
-    - mps.development.lmstudio
+    - odem.development.lmstudio
 ```
 
 ## Role metadata
