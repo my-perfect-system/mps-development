@@ -1,0 +1,9 @@
+---
+# Fragment for the refactor pass.
+# Compiles into changelogs/changelog.yaml at release time.
+minor_changes:
+  - |
+    All 7 mps-development roles (`dotnet`, `espidf`, `java`, `latex`, `lmstudio`, `opencode`, `unity`) flattened from `main.yml + install.yml` into a single `tasks/main.yml` per role. Per-user loops rewritten to use a `block:` wrapper with `loop: '{{ identity_users_resolved | mps_filter_users("development_X") }}'` (the filter replaces the per-role `when: user_roles.X` + `state == 'present'` + `user != {}` boilerplate).
+  - |
+    `espidf`'s nested per-version loops survive the flatten — the inner `loop: espidf_versions` takes precedence over the block's per-user loop inside the `block:`, preserving the per-user × per-version semantics the original `include_tasks` had.
+
