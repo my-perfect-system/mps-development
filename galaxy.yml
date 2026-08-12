@@ -25,6 +25,8 @@ documentation: https://github.com/my-perfect-system/mps-development
 homepage: https://github.com/my-perfect-system/mps-development
 issues: https://github.com/my-perfect-system/mps-development/issues
 build_ignore:
+  .ansible-lint
+  .yamllint
   - .git
   - .github
   - .gitignore
