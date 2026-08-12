@@ -14,5 +14,5 @@ unity_repo_components:
 unity_packages:
   - unityhub
 
-unity_install_vscode: true
+unity_enable_vscode: true
 unity_vscode_deb_url: "https://go.microsoft.com/fwlink/?LinkID=760868"

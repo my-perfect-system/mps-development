@@ -37,7 +37,7 @@ argument_specs:
         default:
           - unityhub
         description: Apt packages to install from the Unity Hub repo
-      unity_install_vscode:
+      unity_enable_vscode:
         type: bool
         required: false
         default: true

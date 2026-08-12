@@ -53,5 +53,5 @@
     state: present
   become: true
   when:
-    - unity_install_vscode | bool
+    - unity_enable_vscode | bool
     - vscode_installed.rc != 0
