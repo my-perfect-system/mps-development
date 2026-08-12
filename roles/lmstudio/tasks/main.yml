@@ -1,5 +1,5 @@
 ---
-- name: "DEV_LMSTUDIO_MAIN - Install LM Studio per user"
+- name: Install lmstudio per user
   ansible.builtin.include_tasks: install.yml
   loop: "{{ identity_users_resolved }}"
   loop_control:

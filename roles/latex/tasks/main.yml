@@ -1,5 +1,5 @@
 ---
-- name: "DEV_LATEX_MAIN - Install LaTeX per user"
+- name: Install latex packages per user
   ansible.builtin.include_tasks: install.yml
   loop: "{{ identity_users_resolved }}"
   loop_control:

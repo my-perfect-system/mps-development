@@ -1,23 +1,23 @@
 ---
-- name: "DEV_LMSTUDIO_INSTALL - Check if LM Studio CLI is already installed"
+- name: Check whether lmstudio is already installed
   ansible.builtin.stat:
     path: "{{ user.home }}/{{ lmstudio_cli_bin }}"
   register: lmstudio_installed
 
-- name: "DEV_LMSTUDIO_INSTALL - Download LM Studio CLI installer"
+- name: Download lmstudio installer
   ansible.builtin.get_url:
     url: "{{ lmstudio_cli_installer_url }}"
     dest: /tmp/lmstudio-install.sh
     mode: "0755"
   when: not lmstudio_installed.stat.exists
 
-- name: "DEV_LMSTUDIO_INSTALL - Install LM Studio CLI"
+- name: Run lmstudio installer as user
   ansible.builtin.command:
     cmd: sudo -u {{ user.name }} /tmp/lmstudio-install.sh
   changed_when: true
   when: not lmstudio_installed.stat.exists
 
-- name: "DEV_LMSTUDIO_INSTALL - Fix ownership of LM Studio install"
+- name: Ensure per-user .lmstudio directory exists
   ansible.builtin.file:
     path: "{{ user.home }}/.lmstudio"
     state: directory
@@ -26,7 +26,7 @@
     mode: "0700"
     recurse: true
 
-- name: "DEV_LMSTUDIO_INSTALL - Ensure ~/.local/bin exists"
+- name: Ensure per-user lmstudio appimage local bin directory exists
   ansible.builtin.file:
     path: "{{ user.home }}/{{ lmstudio_appimage_local_bin }}"
     state: directory
@@ -34,12 +34,12 @@
     group: "{{ user.group | default(user.name) }}"
     mode: "0700"
 
-- name: "DEV_LMSTUDIO_INSTALL - Check if LM Studio AppImage exists"
+- name: Check whether lmstudio appimage exists
   ansible.builtin.stat:
     path: "{{ user.home }}/{{ lmstudio_appimage_path }}"
   register: lmstudio_appimage_stat
 
-- name: "DEV_LMSTUDIO_INSTALL - Download LM Studio AppImage"
+- name: Download lmstudio appimage
   ansible.builtin.get_url:
     url: "{{ lmstudio_appimage_url }}"
     dest: "{{ user.home }}/{{ lmstudio_appimage_path }}"
@@ -48,7 +48,7 @@
     mode: "0755"
   when: not lmstudio_appimage_stat.stat.exists
 
-- name: "DEV_LMSTUDIO_INSTALL - Ensure ~/.local/share/applications"
+- name: Ensure per-user applications directory exists
   ansible.builtin.file:
     path: "{{ user.home }}/.local/share/applications"
     state: directory
@@ -56,7 +56,7 @@
     group: "{{ user.group | default(user.name) }}"
     mode: "0700"
 
-- name: "DEV_LMSTUDIO_INSTALL - Create .desktop launcher"
+- name: Deploy lmstudio desktop entry
   ansible.builtin.copy:
     dest: "{{ user.home }}/{{ lmstudio_desktop_file }}"
     owner: "{{ user.name }}"

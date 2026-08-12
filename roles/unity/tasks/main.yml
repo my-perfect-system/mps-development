@@ -1,5 +1,5 @@
 ---
-- name: "DEV_UNITY_MAIN - Install Unity Hub (and VSCode) per user"
+- name: Install unity per user
   ansible.builtin.include_tasks: install.yml
   loop: "{{ identity_users_resolved }}"
   loop_control:

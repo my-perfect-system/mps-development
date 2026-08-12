@@ -1,5 +1,5 @@
 ---
-- name: "DEV_JAVA_INSTALL - Install default JDK and JRE"
+- name: Install java packages
   ansible.builtin.apt:
     name: "{{ java_packages }}"
     state: present

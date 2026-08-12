@@ -1,16 +1,16 @@
 ---
-- name: "DEV_DOTNET_INSTALL - Download dotnet-install.sh script"
+- name: Download dotnet install script
   ansible.builtin.get_url:
     url: "{{ dotnet_installer_url }}"
     dest: "{{ dotnet_installer_path }}"
     mode: "0755"
 
-- name: "DEV_DOTNET_INSTALL - Run dotnet-install.sh script"
+- name: Run dotnet installer as user
   ansible.builtin.command:
     cmd: sudo -u {{ user.name }} "{{ dotnet_installer_path }}" {{ dotnet_install_args }}
   changed_when: true
 
-- name: "DEV_DOTNET_INSTALL - Fix ownership of .dotnet dir"
+- name: Ensure per-user .dotnet directory exists
   ansible.builtin.file:
     path: "{{ user.home }}/.dotnet"
     state: directory
@@ -19,7 +19,7 @@
     mode: "0700"
     recurse: true
 
-- name: "DEV_DOTNET_INSTALL - Remove dotnet-install.sh script"
+- name: Remove dotnet installer
   ansible.builtin.file:
     path: "{{ dotnet_installer_path }}"
     state: absent

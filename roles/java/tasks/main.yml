@@ -1,5 +1,5 @@
 ---
-- name: "DEV_JAVA_MAIN - Install JDK/JRE per user"
+- name: Install java packages per user
   ansible.builtin.include_tasks: install.yml
   loop: "{{ identity_users_resolved }}"
   loop_control:
