@@ -34,7 +34,7 @@
   become: true
 
 - name: Install unity packages
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: "{{ unity_packages }}"
     state: present
     update_cache: true
@@ -48,7 +48,7 @@
   check_mode: false
 
 - name: Install VS Code deb if missing
-  ansible.builtin.apt:
+  ansible.builtin.package:
     deb: "{{ unity_vscode_deb_url }}"
     state: present
   become: true
