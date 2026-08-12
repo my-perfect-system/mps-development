@@ -1,0 +1,11 @@
+---
+- name: "DEV_UNITY_MAIN - Resolve users"
+  ansible.builtin.include_tasks: resolve.yml
+
+- name: "DEV_UNITY_MAIN - Install Unity Hub (and VSCode) per user"
+  ansible.builtin.include_tasks: install.yml
+  loop: "{{ unity_users_present }}"
+  loop_control:
+    label: "{{ item.name }}"
+  vars:
+    user: "{{ item }}"

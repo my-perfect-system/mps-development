@@ -1,0 +1,74 @@
+---
+- name: "DEV_LMSTUDIO_INSTALL - Check if LM Studio CLI is already installed"
+  ansible.builtin.stat:
+    path: "{{ user.home }}/{{ lmstudio_cli_bin }}"
+  register: lmstudio_installed
+
+- name: "DEV_LMSTUDIO_INSTALL - Download LM Studio CLI installer"
+  ansible.builtin.get_url:
+    url: "{{ lmstudio_cli_installer_url }}"
+    dest: /tmp/lmstudio-install.sh
+    mode: "0755"
+  when: not lmstudio_installed.stat.exists
+
+- name: "DEV_LMSTUDIO_INSTALL - Install LM Studio CLI"
+  ansible.builtin.command:
+    cmd: sudo -u {{ user.name }} /tmp/lmstudio-install.sh
+  changed_when: true
+  when: not lmstudio_installed.stat.exists
+
+- name: "DEV_LMSTUDIO_INSTALL - Fix ownership of LM Studio install"
+  ansible.builtin.file:
+    path: "{{ user.home }}/.lmstudio"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+    recurse: true
+
+- name: "DEV_LMSTUDIO_INSTALL - Ensure ~/.local/bin exists"
+  ansible.builtin.file:
+    path: "{{ user.home }}/{{ lmstudio_appimage_local_bin }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+
+- name: "DEV_LMSTUDIO_INSTALL - Check if LM Studio AppImage exists"
+  ansible.builtin.stat:
+    path: "{{ user.home }}/{{ lmstudio_appimage_path }}"
+  register: lmstudio_appimage_stat
+
+- name: "DEV_LMSTUDIO_INSTALL - Download LM Studio AppImage"
+  ansible.builtin.get_url:
+    url: "{{ lmstudio_appimage_url }}"
+    dest: "{{ user.home }}/{{ lmstudio_appimage_path }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0755"
+  when: not lmstudio_appimage_stat.stat.exists
+
+- name: "DEV_LMSTUDIO_INSTALL - Ensure ~/.local/share/applications"
+  ansible.builtin.file:
+    path: "{{ user.home }}/.local/share/applications"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+
+- name: "DEV_LMSTUDIO_INSTALL - Create .desktop launcher"
+  ansible.builtin.copy:
+    dest: "{{ user.home }}/{{ lmstudio_desktop_file }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0644"
+    content: |
+      [Desktop Entry]
+      Type=Application
+      Name=LM Studio
+      Comment=Run LM Studio
+      Exec={{ user.home }}/{{ lmstudio_appimage_path }}
+      Icon=lmstudio
+      Terminal=false
+      Categories=Development;Utility;
+      StartupNotify=true

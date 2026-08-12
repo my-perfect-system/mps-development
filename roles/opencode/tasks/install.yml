@@ -1,0 +1,75 @@
+---
+- name: "DEV_OPENCODE_INSTALL - Check if OpenCode is already installed"
+  ansible.builtin.stat:
+    path: "{{ user.home }}/{{ opencode_cli_bin }}"
+  register: opencode_installed
+
+- name: "DEV_OPENCODE_INSTALL - Download OpenCode installer"
+  ansible.builtin.get_url:
+    url: "{{ opencode_installer_url }}"
+    dest: "{{ opencode_installer_path }}"
+    mode: "0755"
+  when: not opencode_installed.stat.exists
+
+- name: "DEV_OPENCODE_INSTALL - Run OpenCode installer"
+  ansible.builtin.command:
+    cmd: sudo -u {{ user.name }} "{{ opencode_installer_path }}"
+  changed_when: true
+  when: not opencode_installed.stat.exists
+
+- name: "DEV_OPENCODE_INSTALL - Fix ownership of OpenCode install"
+  ansible.builtin.file:
+    path: "{{ user.home }}/.opencode"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+    recurse: true
+
+- name: "DEV_OPENCODE_INSTALL - Ensure ~/.config/opencode exists"
+  ansible.builtin.file:
+    path: "{{ user.home }}/{{ opencode_config_dst }}/opencode"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+
+- name: "DEV_OPENCODE_INSTALL - Deploy opencode config dotfiles"
+  ansible.posix.synchronize:
+    src: "{{ opencode_config_src }}"
+    dest: "{{ user.home }}/{{ opencode_config_dst }}/opencode/"
+    recursive: true
+    delete: false
+  become: true
+  become_user: "{{ user.name }}"
+
+- name: "DEV_OPENCODE_INSTALL - Fix ownership of opencode config dotfiles"
+  ansible.builtin.file:
+    path: "{{ user.home }}/{{ opencode_config_dst }}/opencode"
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    recurse: true
+
+- name: "DEV_OPENCODE_INSTALL - Ensure ~/.claude exists"
+  ansible.builtin.file:
+    path: "{{ user.home }}/{{ opencode_claude_dst }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+
+- name: "DEV_OPENCODE_INSTALL - Deploy Claude Code dotfiles"
+  ansible.posix.synchronize:
+    src: "{{ opencode_claude_src }}"
+    dest: "{{ user.home }}/{{ opencode_claude_dst }}/"
+    recursive: true
+    delete: false
+  become: true
+  become_user: "{{ user.name }}"
+
+- name: "DEV_OPENCODE_INSTALL - Fix ownership of claude dotfiles"
+  ansible.builtin.file:
+    path: "{{ user.home }}/{{ opencode_claude_dst }}"
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    recurse: true

@@ -1,0 +1,59 @@
+---
+argument_specs:
+  main:
+    short_description: Install Unity Hub + VSCode for Debian 13 (trixie)
+    options:
+      unity_key_url:
+        type: str
+        required: false
+        default: "https://hub.unity3d.com/linux/keys/public"
+        description: Unity Technologies GPG key URL
+      unity_key_path:
+        type: str
+        required: false
+        default: "/usr/share/keyrings/Unity_Technologies_ApS.gpg"
+        description: Where the dearmored Unity GPG key is stored
+      unity_repo_url:
+        type: str
+        required: false
+        default: "https://hub.unity3d.com/linux/repos/deb"
+        description: Unity Hub APT repository base URL
+      unity_repo_state:
+        type: str
+        required: false
+        default: present
+        choices: [present, absent]
+        description: State of the Unity Hub APT repository entry
+      unity_repo_components:
+        type: list
+        required: false
+        default:
+          - stable
+          - main
+        description: APT repository components for the Unity Hub repo
+      unity_packages:
+        type: list
+        required: false
+        default:
+          - unityhub
+        description: Apt packages to install from the Unity Hub repo
+      unity_install_vscode:
+        type: bool
+        required: false
+        default: true
+        description: Also install VSCode (matches source stage7-extras behavior)
+      unity_vscode_deb_url:
+        type: str
+        required: false
+        default: "https://go.microsoft.com/fwlink/?LinkID=760868"
+        description: Direct .deb URL for the VSCode package
+      users_catalog:
+        type: dict
+        required: false
+        default: {}
+        description: Identity catalog keyed by unique id — see mps.users.users docs
+      users_list:
+        type: list
+        required: false
+        default: []
+        description: List of dicts with 'name' (catalog key) and optional 'state'

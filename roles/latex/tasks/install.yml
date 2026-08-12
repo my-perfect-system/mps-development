@@ -1,0 +1,7 @@
+---
+- name: "DEV_LATEX_INSTALL - Install texlive-full"
+  ansible.builtin.apt:
+    name: "{{ latex_packages }}"
+    state: present
+    update_cache: true
+  become: true

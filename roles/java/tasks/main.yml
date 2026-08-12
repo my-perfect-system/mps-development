@@ -1,0 +1,11 @@
+---
+- name: "DEV_JAVA_MAIN - Resolve users"
+  ansible.builtin.include_tasks: resolve.yml
+
+- name: "DEV_JAVA_MAIN - Install JDK/JRE per user"
+  ansible.builtin.include_tasks: install.yml
+  loop: "{{ java_users_present }}"
+  loop_control:
+    label: "{{ item.name }}"
+  vars:
+    user: "{{ item }}"

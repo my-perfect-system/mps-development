@@ -1,0 +1,57 @@
+---
+- name: "DEV_UNITY_INSTALL - Ensure keyrings directory exists"
+  ansible.builtin.file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: "DEV_UNITY_INSTALL - Download Unity Technologies GPG key"
+  ansible.builtin.get_url:
+    url: "{{ unity_key_url }}"
+    dest: /tmp/unity-key.pub
+    mode: "0644"
+  become: true
+
+- name: "DEV_UNITY_INSTALL - Dearmor Unity Technologies GPG key"
+  ansible.builtin.command: gpg --dearmor --yes -o {{ unity_key_path }} /tmp/unity-key.pub
+  args:
+    creates: "{{ unity_key_path }}"
+  become: true
+
+- name: "DEV_UNITY_INSTALL - Remove temp Unity key file"
+  ansible.builtin.file:
+    path: /tmp/unity-key.pub
+    state: absent
+  become: true
+
+- name: "DEV_UNITY_INSTALL - Add unityhub APT repository"
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by={{ unity_key_path }}] {{ unity_repo_url }} {{ unity_repo_components | join(' ') }}"
+    filename: unityhub
+    state: "{{ unity_repo_state }}"
+    update_cache: true
+  become: true
+
+- name: "DEV_UNITY_INSTALL - Install unityhub package"
+  ansible.builtin.apt:
+    name: "{{ unity_packages }}"
+    state: present
+    update_cache: true
+  become: true
+
+- name: "DEV_UNITY_INSTALL - Check if VSCode is already installed"
+  ansible.builtin.command: dpkg -s code
+  register: vscode_installed
+  failed_when: false
+  changed_when: false
+  check_mode: false
+
+- name: "DEV_UNITY_INSTALL - Install VSCode (from .deb)"
+  ansible.builtin.apt:
+    deb: "{{ unity_vscode_deb_url }}"
+    state: present
+  become: true
+  when:
+    - unity_install_vscode | bool
+    - vscode_installed.rc != 0

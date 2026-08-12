@@ -1,0 +1,50 @@
+---
+argument_specs:
+  main:
+    short_description: Install LM Studio (CLI + AppImage) per user for Debian 13 (trixie)
+    options:
+      lmstudio_cli_installer_url:
+        type: str
+        required: false
+        default: "https://lmstudio.ai/install.sh"
+        description: URL of the LM Studio CLI installer script
+      lmstudio_appimage_version:
+        type: str
+        required: false
+        default: "0.4.12-1"
+        description: Version of the LM Studio desktop AppImage to install
+      lmstudio_appimage_url:
+        type: str
+        required: false
+        default: "https://installers.lmstudio.ai/linux/x64/{{ lmstudio_appimage_version }}/LM-Studio-{{ lmstudio_appimage_version }}-x64.AppImage"
+        description: Direct URL for the LM Studio AppImage
+      lmstudio_cli_bin:
+        type: str
+        required: false
+        default: .lmstudio/bin/lms
+        description: Home-relative path where the LM Studio CLI lands after install
+      lmstudio_appimage_path:
+        type: str
+        required: false
+        default: .local/bin/lmstudio.AppImage
+        description: Home-relative path where the LM Studio AppImage is stored
+      lmstudio_appimage_local_bin:
+        type: str
+        required: false
+        default: .local/bin
+        description: Home-relative per-user local bin directory
+      lmstudio_desktop_file:
+        type: str
+        required: false
+        default: .local/share/applications/lmstudio.desktop
+        description: Home-relative path where the .desktop launcher is written
+      users_catalog:
+        type: dict
+        required: false
+        default: {}
+        description: Identity catalog keyed by unique id — see mps.users.users docs
+      users_list:
+        type: list
+        required: false
+        default: []
+        description: List of dicts with 'name' (catalog key) and optional 'state'

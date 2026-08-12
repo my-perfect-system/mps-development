@@ -1,0 +1,55 @@
+---
+argument_specs:
+  main:
+    short_description: Install Espressif IoT Development Framework (multi-version, per-user)
+    options:
+      espidf_versions:
+        type: list
+        required: false
+        default:
+          - v5.3
+        description: ESP-IDF versions to install (one isolated install per version)
+      espidf_src_base:
+        type: str
+        required: false
+        default: esp/sources
+        description: Home-relative base directory for ESP-IDF source clones
+      espidf_tools_base:
+        type: str
+        required: false
+        default: esp/tools
+        description: Home-relative base directory for ESP-IDF toolchains (per version)
+      espidf_local_bin:
+        type: str
+        required: false
+        default: .local/bin
+        description: Home-relative per-user bin directory for activation scripts
+      espidf_apt_packages:
+        type: list
+        required: false
+        default:
+          - git
+          - wget
+          - flex
+          - bison
+          - gperf
+          - cmake
+          - ninja-build
+          - ccache
+          - libffi-dev
+          - libssl-dev
+          - dfu-util
+          - python3
+          - python3-pip
+          - python3-venv
+        description: Apt packages required by ESP-IDF
+      users_catalog:
+        type: dict
+        required: false
+        default: {}
+        description: Identity catalog keyed by unique id — see mps.users.users docs
+      users_list:
+        type: list
+        required: false
+        default: []
+        description: List of dicts with 'name' (catalog key) and optional 'state'

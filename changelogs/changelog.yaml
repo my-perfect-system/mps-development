@@ -1,0 +1,14 @@
+---
+ancestor: null
+releases:
+  0.2.0:
+    changes:
+      release_summary: "Development tooling for Debian 13 (trixie): .NET, ESP-IDF, Java, LaTeX, LM Studio, OpenCode, Unity."
+      minor_changes:
+        - "opencode - OpenCode CLI + per-user ~/.config/opencode/ and ~/.claude/ dotfiles"
+        - "lmstudio - LM Studio CLI + AppImage + .desktop launcher per user"
+        - "java - default-jdk + default-jre"
+        - "latex - texlive-full"
+        - "unity - Unity Hub via HTTPS APT repo + VSCode .deb"
+        - "dotnet - .NET SDK via official dotnet-install.sh per user"
+        - "espidf - Espressif IDF multi-version with per-user activation scripts"

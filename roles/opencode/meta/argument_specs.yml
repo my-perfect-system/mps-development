@@ -1,0 +1,55 @@
+---
+argument_specs:
+  main:
+    short_description: Install OpenCode CLI + per-user dotfiles (~/.config/opencode, ~/.claude)
+    options:
+      opencode_installer_url:
+        type: str
+        required: false
+        default: "https://opencode.ai/install"
+        description: URL of the OpenCode installer script
+      opencode_cli_bin:
+        type: str
+        required: false
+        default: .opencode/bin/opencode
+        description: Home-relative path where the OpenCode CLI lands after install
+      opencode_installer_path:
+        type: str
+        required: false
+        default: /tmp/opencode-install.sh
+        description: Where the installer script is staged
+      opencode_dotfiles_root:
+        type: str
+        required: false
+        default: "{{ role_path }}/files/dotfiles"
+        description: Role-relative path to the dotfiles root
+      opencode_config_src:
+        type: str
+        required: false
+        default: "{{ opencode_dotfiles_root }}/.config/opencode/"
+        description: Source path for the opencode config dotfiles
+      opencode_config_dst:
+        type: str
+        required: false
+        default: .config
+        description: Home-relative destination for the opencode config dotfiles
+      opencode_claude_src:
+        type: str
+        required: false
+        default: "{{ opencode_dotfiles_root }}/.claude/"
+        description: Source path for the Claude Code dotfiles tree
+      opencode_claude_dst:
+        type: str
+        required: false
+        default: .claude
+        description: Home-relative destination for the Claude Code dotfiles
+      users_catalog:
+        type: dict
+        required: false
+        default: {}
+        description: Identity catalog keyed by unique id — see mps.users.users docs
+      users_list:
+        type: list
+        required: false
+        default: []
+        description: List of dicts with 'name' (catalog key) and optional 'state'

@@ -1,0 +1,13 @@
+---
+- name: "DEV_LMSTUDIO_MAIN - Resolve users"
+  ansible.builtin.include_tasks: resolve.yml
+
+- name: "DEV_LMSTUDIO_MAIN - Install LM Studio per user"
+  ansible.builtin.include_tasks: install.yml
+  loop: "{{ lmstudio_users_present }}"
+  loop_control:
+    label: "{{ item.name }}"
+  vars:
+    user: "{{ item }}"
+  when:
+    - user != {}

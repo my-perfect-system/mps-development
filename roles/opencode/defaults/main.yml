@@ -1,0 +1,14 @@
+---
+
+users_catalog: {}  # noqa var-naming[no-role-prefix]
+users_list: []  # noqa var-naming[no-role-prefix]
+opencode_installer_url: "https://opencode.ai/install"
+
+opencode_cli_bin: .opencode/bin/opencode
+opencode_installer_path: /tmp/opencode-install.sh
+
+opencode_dotfiles_root: "{{ role_path }}/files/dotfiles"
+opencode_config_src: "{{ opencode_dotfiles_root }}/.config/opencode/"
+opencode_config_dst: .config
+opencode_claude_src: "{{ opencode_dotfiles_root }}/.claude/"
+opencode_claude_dst: .claude

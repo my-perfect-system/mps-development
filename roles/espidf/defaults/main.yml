@@ -1,0 +1,26 @@
+---
+
+users_catalog: {}  # noqa var-naming[no-role-prefix]
+users_list: []  # noqa var-naming[no-role-prefix]
+espidf_versions:
+  - v5.3
+
+espidf_src_base: esp/sources
+espidf_tools_base: esp/tools
+espidf_local_bin: .local/bin
+
+espidf_apt_packages:
+  - git
+  - wget
+  - flex
+  - bison
+  - gperf
+  - cmake
+  - ninja-build
+  - ccache
+  - libffi-dev
+  - libssl-dev
+  - dfu-util
+  - python3
+  - python3-pip
+  - python3-venv

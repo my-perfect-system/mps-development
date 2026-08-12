@@ -1,0 +1,74 @@
+---
+- name: "DEV_ESPIDF_INSTALL - Install system dependencies"
+  ansible.builtin.apt:
+    name: "{{ espidf_apt_packages }}"
+    state: present
+    update_cache: true
+  become: true
+
+- name: "DEV_ESPIDF_INSTALL - Ensure base directories exist"
+  ansible.builtin.file:
+    path: "{{ path }}"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+  loop:
+    - "{{ user.home }}/{{ espidf_src_base }}"
+    - "{{ user.home }}/{{ espidf_tools_base }}"
+    - "{{ user.home }}/{{ espidf_local_bin }}"
+  loop_control:
+    loop_var: path
+
+- name: "DEV_ESPIDF_INSTALL - Install ESP-IDF versions"
+  ansible.builtin.shell:
+    cmd: |
+      set -e
+
+      VERSION="{{ espidf_version }}"
+
+      SRC="{{ user.home }}/{{ espidf_src_base }}/esp-idf-$VERSION"
+      TOOLS="{{ user.home }}/{{ espidf_tools_base }}/esp-idf-$VERSION"
+
+      export IDF_PATH="$SRC"
+      export IDF_TOOLS_PATH="$TOOLS"
+
+      if [ ! -d "$SRC/.git" ]; then
+        git clone -j8 -b $VERSION --recursive https://github.com/espressif/esp-idf.git "$SRC"
+      fi
+
+      cd "$SRC"
+      ./install.sh
+      . export.sh
+
+      touch "$TOOLS/.installed"
+    executable: /bin/bash
+    creates: "{{ user.home }}/{{ espidf_tools_base }}/esp-idf-{{ espidf_version }}/.installed"
+  changed_when: true
+  loop: "{{ espidf_versions }}"
+  loop_control:
+    loop_var: espidf_version
+
+- name: "DEV_ESPIDF_INSTALL - Fix ownership of esp directories"
+  ansible.builtin.file:
+    path: "{{ user.home }}/esp"
+    state: directory
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+    recurse: true
+
+- name: "DEV_ESPIDF_INSTALL - Create activation scripts"
+  ansible.builtin.copy:
+    dest: "{{ user.home }}/.local/bin/activate-espidf-{{ espidf_version }}.bash"
+    owner: "{{ user.name }}"
+    group: "{{ user.group | default(user.name) }}"
+    mode: "0700"
+    content: |
+      #!/bin/bash
+      export IDF_PATH="{{ user.home }}/{{ espidf_src_base }}/esp-idf-{{ espidf_version }}"
+      export IDF_TOOLS_PATH="{{ user.home }}/{{ espidf_tools_base }}/esp-idf-{{ espidf_version }}"
+      source "$IDF_PATH/export.sh"
+  loop: "{{ espidf_versions }}"
+  loop_control:
+    loop_var: espidf_version

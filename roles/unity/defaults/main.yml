@@ -1,0 +1,18 @@
+---
+
+users_catalog: {}  # noqa var-naming[no-role-prefix]
+users_list: []  # noqa var-naming[no-role-prefix]
+unity_key_url: "https://hub.unity3d.com/linux/keys/public"
+unity_key_path: "/usr/share/keyrings/Unity_Technologies_ApS.gpg"
+
+unity_repo_url: "https://hub.unity3d.com/linux/repos/deb"
+unity_repo_state: present
+unity_repo_components:
+  - stable
+  - main
+
+unity_packages:
+  - unityhub
+
+unity_install_vscode: true
+unity_vscode_deb_url: "https://go.microsoft.com/fwlink/?LinkID=760868"
